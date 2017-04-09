@@ -76,6 +76,7 @@ build-playerglobal:
 
 build-extension:
 	grunt firefox
+	grunt webext
 
 build-web:
 	grunt web

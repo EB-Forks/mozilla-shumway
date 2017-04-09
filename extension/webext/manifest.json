@@ -1,0 +1,58 @@
+{
+  "name": "Shumway",
+  "version": "(SHUMWAY_VERSION)",
+  "manifest_version": 2,
+  "icons": {
+    "48": "icon.png",
+    "64": "icon64.png"
+  },
+  "applications": {
+    "gecko": {
+      "id": "shumway-dev@research.mozilla.org"
+    }
+  },
+  "options_ui": {
+    "page": "chrome/options.html",
+    "chrome_style": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "all_frames": true,
+      "js": [
+        "chrome/StartupInfo.js",
+        "chrome/ShumwayCom.js",
+        "chrome/ShumwayWebExt.js"
+      ]
+    },
+    {
+      "matches": ["moz-extension://*/content/web/viewer.html"],
+      "js": [
+        "content/web/viewer.js"
+      ]
+    },
+    {
+      "matches": ["moz-extension://*/content/web/viewer.player.html"],
+      "js": [
+        "content/libs/relooper.js",
+        "content/shumway.player.js",
+        "content/web/viewerPlayer.js"
+      ]
+    },
+    {
+      "matches": ["moz-extension://*/content/web/viewer.gfx.html"],
+      "js": [
+        "content/shumway.gfx.js",
+        "content/web/viewerGfx.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "chrome/FileLoader.js",
+    "chrome/ShumwayCom.js",
+    "content/*"
+  ],
+  "permissions": [
+    "storage"
+  ]
+}

@@ -59,6 +59,9 @@ module.exports = function(grunt) {
       build_extension: {
         cmd: 'make -C extension/firefox/ build'
       },
+      build_web_extension: {
+        cmd: 'make -C extension/webext/ build'
+      },
       build_mozcentral: {
         cmd: 'make -C extension/mozcentral/ build'
       },
@@ -337,6 +340,10 @@ module.exports = function(grunt) {
         files: 'extension/firefox/**/*',
         tasks: ['build-extension']
       },
+      web_extension: {
+        files: 'extension/webext/**/*',
+        tasks: ['build-extension']
+      },
       base: {
         files: 'src/base/**/*',
         tasks: ['exec:build_base_ts']
@@ -604,7 +611,7 @@ module.exports = function(grunt) {
       done();
     });
   });
-  
+
   grunt.registerTask('reftest-extension', function () {
     grunt.option('extension', true);
     grunt.task.run('firefox', 'reftest');
@@ -1193,7 +1200,8 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('firefox', ['build', 'closure-bundles', 'exec:build_extension']);
+  grunt.registerTask('webext', ['build', 'closure-bundles', 'exec:build_web_extension']);
   grunt.registerTask('mozcentral', ['build', 'closure-bundles', 'exec:build_mozcentral']);
-  grunt.registerTask('web', ['build', 'closure-bundles', 'exec:build_extension', 'shell-package', 'shuobject-package', 'exec:build_web']);
+  grunt.registerTask('web', ['build', 'closure-bundles', 'exec:build_extension', 'exec:build_web_extension', 'shell-package', 'shuobject-package', 'exec:build_web']);
   grunt.registerTask('dist', ['build', 'closure-bundles', 'dist-package']);
 };
