@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <!--
 Copyright 2013 Mozilla Foundation
@@ -14,13 +15,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <title>Shumway viewer</title>
-    <base href=""/>
-    <style>
+    <style><![CDATA[
       body {
         margin: 0;
         overflow: hidden;
@@ -92,18 +92,17 @@ limitations under the License.
           display: none;
         }
       }
-    </style>
+    ]]></style>
+    <script defer="true" src="viewer.js"/>
   </head>
-
   <body>
-    <iframe id="playerIframe" width="9" height="9" src="" sandbox="allow-scripts"></iframe>
-    <iframe id="gfxIframe" src="" sandbox="allow-scripts"></iframe>
+    <iframe id="playerIframe" width="9" height="9" src="" sandbox="allow-scripts"/>
+    <iframe id="gfxIframe" src="" sandbox="allow-scripts"/>
     <section>
       <div id="overlay">
-        <a id="fallback" href="#">Shumway <span class="icon">&times;</span></a>
+        <a id="fallback" href="#">Shumway <span class="icon">×</span></a>
         <a id="report" href="#">Report Problems</a>
       </div>
     </section>
-    <script src="viewer.js"></script>
   </body>
 </html>
