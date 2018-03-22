@@ -8,6 +8,7 @@
   },
   "applications": {
     "gecko": {
+      "strict_min_version": "60a1",
       "id": "shumway-dev@research.mozilla.org"
     }
   },
@@ -20,12 +21,13 @@
       "matches": ["<all_urls>"],
       "all_frames": true,
       "js": [
+        "chrome/StartupInfo.js",
         "chrome/shumway.js"
       ]
     }
   ],
   "web_accessible_resources": [
-    "content/shumway.xhtml"
+    "content/*"
   ],
   "permissions": [
     "storage"

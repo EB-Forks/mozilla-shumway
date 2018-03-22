@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 /* global browser */
-var movieUrl, movieParams;
+
+window.addEventListener("message", async e => {
+  console.log("[shumway:viewer]",e);
+  const args = e.data;
+  if (typeof args !== 'object' || args === null) {
+    return;
+  }
+});
+
+let movieUrl, movieParams;
 
 function runViewer() {
-  var flashParams = ShumwayCom.getPluginParams();
+  const flashParams = ShumwayCom.getPluginParams();
 
   movieUrl = flashParams.url;
   if (!movieUrl) {
@@ -84,20 +93,20 @@ function runViewer() {
         isHudOn: playerSettings.hud,
         backgroundColor: backgroundColor
       }
-    }, '*')
+    }, '*');
   });
 }
 
-var playerWindow, gfxWindow;
+let playerWindow, gfxWindow;
 
 // We need to wait for gfx window to report display parameters before we
 // start SWF playback in the player window.
-var displayParametersResolved;
-var displayParametersReady = new Promise(function (resolve) {
+let displayParametersResolved;
+const displayParametersReady = new Promise(function (resolve) {
   displayParametersResolved = resolve;
 });
 
-var playerReady = new Promise(function (resolve) {
+const playerReady = new Promise(function (resolve) {
   function iframeLoaded() {
     if (--iframesToLoad > 0) {
       return;
@@ -110,8 +119,7 @@ var playerReady = new Promise(function (resolve) {
 
   var iframesToLoad = 2;
   document.getElementById('gfxIframe').addEventListener('load', iframeLoaded);
-  document.getElementById('gfxIframe').src = 'viewer.gfx.html';
+  document.getElementById('gfxIframe').src = 'viewer.gfx.xhtml';
   document.getElementById('playerIframe').addEventListener('load', iframeLoaded);
-  document.getElementById('playerIframe').src = 'viewer.player.html';
+  document.getElementById('playerIframe').src = 'viewer.player.xhtml';
 });
-

@@ -14,3 +14,12 @@
  * limitations under the License.
  */
 /* global browser */
+
+window.addEventListener("message", async e => {
+  console.log("[shumway:content]",e.data);
+  const args = e.data;
+  if (typeof args !== 'object' || args === null) {
+    return;
+  }
+});
+console.log("[shumway:content]","added message listener");

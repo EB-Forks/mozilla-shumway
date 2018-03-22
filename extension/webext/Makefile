@@ -40,8 +40,14 @@ build: ensureoutputdir
 	cp $(BUNDLES_DIR)/shumway*.js $(BUILD_DIR)/content/
 	cp ../../build/version/version.txt $(BUILD_DIR)/content/version.txt
 	echo "web-extension" >> $(BUILD_DIR)/content/version.txt
+	cd $(BUILD_DIR)
+
+lint: build
+	web-ext lint
+
+build-release: lint
 	# Packaging XPI file
-	cd $(BUILD_DIR); web-ext build
+	web-ext build
 	cp $(BUILD_DIR)/web-ext-artifacts/shumway-$(VERSION).zip $(BUILD_DIR)/shumway.xpi
 
 ensureoutputdir: clean
