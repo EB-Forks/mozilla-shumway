@@ -25,10 +25,8 @@ function save_options() {
     playerSettings: {
       hud: document.getElementById('hud').checked
     }
-  }).then(() => {
-    console.info("[Shumway]", "Sucessfully saved options.");
   }).catch((error) => {
-    console.error("[Shumway]", "Couldn't save options.", error);
+    console.error('[Shumway]', 'Failed to save options.', error);
   });
 }
 

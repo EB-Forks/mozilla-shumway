@@ -13,33 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* global browser */
 
-window.addEventListener("message", async e => {
-  console.log("[shumway:viewer]",e);
-  const args = e.data;
-  if (typeof args !== 'object' || args === null) {
-    return;
-  }
+let startupInfo;
+const loadedPromise = new Promise (resolve => {
+  window.addEventListener('message', async e => {
+    const args = e.data;
+    console.log('[shumway:viewer]',args);
+    if (typeof args !== 'object' || args === null) {
+      return;
+    }
+    if (args.type === 'swf') {
+      startupInfo = args.startupInfo;
+    }
+    resolve();
+  });
 });
 
 let movieUrl, movieParams;
 
-function runViewer() {
-  const flashParams = ShumwayCom.getPluginParams();
+async function runViewer() {
+  await loadedPromise;
+  const flashParams = {
+    url:               startupInfo.url,
+    baseUrl:           startupInfo.baseUrl,
+    movieParams:       startupInfo.movieParams,
+    objectParams:      startupInfo.objectParams,
+    isOverlay:         startupInfo.isOverlay,
+    isPausedAtStart:   startupInfo.isPausedAtStart,
+    initStartTime:     startupInfo.initStartTime,
+    isDebuggerEnabled: false
+  };
 
   movieUrl = flashParams.url;
   if (!movieUrl) {
-    console.log("no movie url provided -- stopping here");
+    console.log('no movie url provided -- stopping here');
     return;
   }
 
-  movieParams = flashParams.movieParams;
-  var objectParams = flashParams.objectParams;
-  var baseUrl = flashParams.baseUrl;
-  var isOverlay = flashParams.isOverlay;
+  movieParams           = flashParams.movieParams;
+  var objectParams      = flashParams.objectParams;
+  var baseUrl           = flashParams.baseUrl;
+  var isOverlay         = flashParams.isOverlay;
   var isDebuggerEnabled = flashParams.isDebuggerEnabled;
-  var initStartTime = flashParams.initStartTime;
+  var initStartTime     = flashParams.initStartTime;
 
   if (movieParams.fmt_list && movieParams.url_encoded_fmt_stream_map) {
     // HACK removing FLVs from the fmt_list
@@ -96,6 +112,53 @@ function runViewer() {
     }, '*');
   });
 }
+
+window.addEventListener('message', async e => {
+  const args = e.data;
+  if (typeof args !== 'object' || args === null) {
+    return;
+  }
+  if (gfxWindow && e.source === gfxWindow) {
+    switch (args.callback) {
+      case 'displayParameters':
+        // The display parameters data will be send to the player window.
+        // TODO do we need sanitize it?
+        //displayParametersResolved(args.params);
+        break;
+      case 'showURL':
+        //showURL();
+        break;
+      case 'showInInspector':
+        //showInInspector();
+        break;
+      case 'reportIssue':
+        //reportIssue();
+        break;
+      case 'showAbout':
+        //showAbout();
+        break;
+      case 'enableDebug':
+        //enableDebug();
+        break;
+      case 'fallback':
+        //fallback();
+        break;
+      default:
+        console.error('Unexpected message from gfx frame: ' + args.callback);
+        break;
+    }
+  }
+  if (playerWindow && e.source === playerWindow) {
+    switch (args.callback) {
+      case 'started':
+        document.body.classList.add('started');
+        break;
+      default:
+        console.error('Unexpected message from player frame: ' + args.callback);
+        break;
+    }
+  }
+});
 
 let playerWindow, gfxWindow;
 

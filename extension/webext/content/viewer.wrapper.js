@@ -13,13 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* global browser */
 
-window.addEventListener("message", async e => {
-  console.log("[shumway:content]",e.data);
+/** @type HTMLIFrameElement */
+const viewer = document.querySelector('#viewer');
+let resolveLoad;
+const loadedPromise = new Promise(resolve => {
+  resolveLoad = resolve;
+});
+
+viewer.addEventListener('load', async e => {
+  const data = await loadedPromise;
+  viewer.contentWindow.postMessage(data, '*');
+});
+
+window.addEventListener('message', async e => {
+  console.log('[shumway:content]',e.data);
   const args = e.data;
   if (typeof args !== 'object' || args === null) {
     return;
   }
+  if (args.type === 'swf') {
+    resolveLoad(args);
+  }
 });
-console.log("[shumway:content]","added message listener");
+console.log('[shumway:content]','added message listener');
